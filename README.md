@@ -1,4 +1,4 @@
-# File-storage-service-system.m
+# File-storage-service-system
 核心功能 :文件存储服务的核心功能是：上传和下载。除了这两个核心功能，
   可用性：作为基础性服务，通过集群化部署实现高可用 
   配置性：结合nacos配置中心，可动态配置上传下载的方式等配置 
