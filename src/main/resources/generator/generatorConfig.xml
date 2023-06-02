@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <properties resource="mybatis-generator.properties"/>
+
+    <context id="Mysql" defaultModelType="flat">
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+        <property name="javaFileEncoding" value="UTF-8"/>
+
+        <!-- 为生成的Java模型创建一个toString方法 -->
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
+
+        <!-- 统一Mapper 接口 -->
+        <plugin type="org.mybatis.generator.plugins.MapperConfigPlugin">
+            <!-- 是否删除Mapper类里的方法，默认删除-->
+            <property name="deleteMethod" value="true"/>
+        </plugin>
+
+        <commentGenerator>
+            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+            <property name="suppressAllComments" value="false"/>
+            <property name="suppressDate" value="true"/>
+            <!-- 添加 db 表中字段的注释 -->
+            <property name="addRemarkComments" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="${spring.datasource.druid.driver-class-name}"
+                        connectionURL="${spring.datasource.druid.url}"
+                        userId="${spring.datasource.druid.username}"
+                        password="${spring.datasource.druid.password}">
+            <property name="useInformationSchema" value="true"/>
+            <property name="nullCatalogMeansCurrent" value="true"/>
+        </jdbcConnection>
+
+        <javaTypeResolver>
+            <!-- 默认false，为 false时把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer，为 true时把JDBC DECIMAL 和 NUMERIC 类型解析为java.math.BigDecimal -->
+            <property name="forceBigDecimals" value="true"/>
+            <!-- 此属性用于指定 MyBatis Generator 是否应强制对 DATE、TIME 和 TIMESTAMP 字段使用 JSR-310 数据类型，而不是使用 java.util.Date -->
+            <property name="useJSR310Types" value="true"/>
+        </javaTypeResolver>
+
+        <javaModelGenerator targetPackage="com.sevenme.modules.jobsafetyanalysis.entity"
+                            targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="mapper.jobsafetyanalysis" targetProject="src/main/resources"/>
+
+        <javaClientGenerator targetPackage="com.sevenme.modules.jobsafetyanalysis.dao"
+                             targetProject="src/main/java" type="XMLMAPPER"/>
+
+        <table tableName="maintain_pigging_history">
+            <!-- <ignoreColumn column="create_time" />
+            <ignoreColumn column="update_time" /> -->
+            <!--mysql 配置-->
+            <!-- <generatedKey column="id" sqlStatement="Mysql" identity="true"/> -->
+            <!--oracle 配置-->
+            <!--<generatedKey column="id" sqlStatement="select SEQ_{1}.nextval from dual" identity="false" type="pre"/>-->
+        </table>
+    </context>
+</generatorConfiguration>

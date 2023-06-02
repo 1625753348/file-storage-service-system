@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.chromatic.modules.app.dao.InformationSchemaDao">
+
+    <select id="selectInformationSchema" resultType="com.chromatic.modules.app.entity.KeyColumnUsage"
+            parameterType="String">
+        SELECT
+        *
+        FROM
+        INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+        WHERE
+        REFERENCED_TABLE_NAME = #{masterTableName}
+        AND
+        CONSTRAINT_SCHEMA = "v7138_job_safety_analysis"
+    </select>
+
+    <select id="selectKeyColumnUsageBy" resultType="com.chromatic.modules.app.entity.KeyColumnUsage">
+        SELECT
+        *
+        FROM
+        INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+        WHERE
+        REFERENCED_TABLE_NAME = #{masterTableName}
+        AND
+        TABLE_NAME = #{sonTableName}
+        AND
+        CONSTRAINT_NAME = #{constraintName}
+        AND
+        CONSTRAINT_SCHEMA = "v7138_job_safety_analysis"
+    </select>
+
+    <delete id="deleteData">
+        delete from ${tableName} where ${columnName} = #{columnVal}
+    </delete>
+
+    <update id="logicDeleteData">
+        update ${tableName} set `del_flag` = null where ${columnName} = #{columnVal} AND `del_flag`= 0 ;
+    </update>
+
+
+
+    <select id="getDataCount" resultType="int">
+        select count(*) from ${tableName} where ${columnName} = #{masterTableId}
+    </select>
+
+    <select id="getIds" resultType="String">
+        select id from ${tableName} where ${columnName} = #{masterTableId} and del_flag = 0 ;
+    </select>
+
+    <select id="getAllTablesName" resultType="String">
+        SELECT
+        table_name
+        FROM
+        information_schema.tables
+        WHERE
+        table_schema = #{tableName}
+    </select>
+
+    <select id="selectReferentialConstraints" resultType="com.chromatic.modules.app.entity.ReferentialConstraint">
+        select
+
+        CONSTRAINT_SCHEMA,
+        CONSTRAINT_NAME,
+        UNIQUE_CONSTRAINT_SCHEMA,
+        UNIQUE_CONSTRAINT_NAME,
+        MATCH_OPTION,
+        UPDATE_RULE,
+        DELETE_RULE,
+        TABLE_NAME,
+        REFERENCED_TABLE_NAME
+
+        from
+        information_schema.REFERENTIAL_CONSTRAINTS
+        WHERE TABLE_NAME = #{tableName} ;
+    </select>
+    <select id="selectTableComment" resultType="String">
+        SELECT
+        TABLE_COMMENT
+        FROM
+        INFORMATION_SCHEMA.TABLES
+        WHERE
+        TABLE_TYPE = 'BASE TABLE'
+        AND TABLE_NAME = #{tableName}
+        AND TABLE_SCHEMA = 'v7138_job_safety_analysis'
+    </select>
+
+    <select id="selectTableField" resultType="String">
+        SELECT
+        COLUMN_NAME
+        FROM information_schema.COLUMNS
+        WHERE TABLE_SCHEMA = 'v7138_job_safety_analysis'
+        AND TABLE_NAME = 'job_type_template'
+    </select>
+
+</mapper>
